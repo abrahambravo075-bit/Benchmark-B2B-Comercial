@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benchmark B2B Comercial Proplasa</title>
+    <title>Benchmark B2B Comercial</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,9 +29,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- SheetJS CDN para parsear archivos Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    
+
     <style>
-        /* Estilos dinámicos para Modo Oscuro y Claro */
         .dark .glass-panel {
             background: rgba(10, 21, 138, 0.4);
             backdrop-filter: blur(12px);
@@ -43,7 +42,6 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
-
         .dark .glass-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(8px);
@@ -55,17 +53,14 @@
             border: 1px solid rgba(0, 0, 0, 0.06);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         .dark ::-webkit-scrollbar-track { background: #000642; }
         .light ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb {
-            background: #1420A3;
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar-thumb { background: #1420A3; border-radius: 4px; }
+        /* Ocultar flechas del input numérico de margen */
+        input.margin-edit::-webkit-outer-spin-button,
+        input.margin-edit::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input.margin-edit { -moz-appearance: textfield; }
     </style>
 </head>
 <body class="dark:bg-navy-950 dark:text-slate-100 bg-slate-100 text-slate-800 min-h-screen font-sans flex flex-col transition-colors duration-300">
@@ -77,19 +72,17 @@
                 <i data-lucide="line-chart" class="w-6 h-6"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold tracking-wide">Benchmark B2B Comercial Proplasa</h1>
+                <h1 class="text-xl font-bold tracking-wide">Benchmark B2B Comercial</h1>
                 <p class="text-xs opacity-75">Plataforma de Inteligencia de Mercado y análisis de precios</p>
             </div>
         </div>
 
         <div class="flex items-center space-x-3">
-            <!-- Botón Cambiar Tema -->
             <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-200 dark:bg-navy-900 border border-slate-300 dark:border-white/10 hover:opacity-80 transition" title="Cambiar Tema Claro / Oscuro">
                 <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
                 <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-slate-700"></i>
             </button>
 
-            <!-- Botón Carga de Excel -->
             <label class="cursor-pointer bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2.5 rounded-lg border border-blue-400/30 shadow-lg flex items-center space-x-2 transition-all">
                 <i data-lucide="upload" class="w-4 h-4"></i>
                 <span>Cargar Excel</span>
@@ -98,7 +91,7 @@
 
             <div class="text-xs text-right hidden sm:block border-l border-slate-300 dark:border-white/10 pl-4">
                 <p class="opacity-75">Estado del Archivo</p>
-                <p class="font-medium text-emerald-500" id="fileStatus">Cargado (Sincronizado)</p>
+                <p class="font-medium text-slate-400" id="fileStatus">Sin archivo cargado</p>
             </div>
         </div>
     </header>
@@ -108,8 +101,6 @@
 
         <!-- Barra de Control y Filtros -->
         <section class="glass-panel p-4 rounded-xl flex flex-wrap items-center justify-between gap-4">
-            
-            <!-- Filtro por Canal -->
             <div class="flex items-center space-x-3">
                 <span class="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
                     <i data-lucide="filter" class="w-4 h-4 text-blue-500"></i>
@@ -122,7 +113,6 @@
                 </div>
             </div>
 
-            <!-- Filtro por Fecha de Levantamiento -->
             <div class="flex items-center space-x-2">
                 <span class="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
                     <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
@@ -133,14 +123,6 @@
                 </select>
             </div>
 
-            <!-- Margen Objetivo Dinámico -->
-            <div class="flex items-center space-x-2 text-xs">
-                <span class="font-medium opacity-80">Margen Objetivo Actual:</span>
-                <input type="number" id="globalMarginInput" value="18" min="1" max="50" onchange="recalculateAndRender()" class="w-16 bg-slate-200 dark:bg-navy-900 border border-slate-300 dark:border-white/20 rounded px-2 py-1 text-center font-bold focus:border-blue-500 outline-none">
-                <span class="text-blue-500 font-bold">%</span>
-            </div>
-
-            <!-- Botón Actualizar -->
             <button onclick="recalculateAndRender()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow flex items-center space-x-2 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 <span>Actualizar Datos</span>
@@ -192,7 +174,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs uppercase tracking-wider font-medium opacity-75">Brecha Promedio B2B</p>
-                        <h3 class="text-2xl font-bold text-amber-500 mt-1" id="kpi-posicion">0%</h3>
+                        <h3 class="text-2xl font-bold text-amber-500 mt-1" id="kpi-posicion">-</h3>
                     </div>
                     <div class="p-2 bg-amber-500/10 text-amber-500 rounded-lg">
                         <i data-lucide="trending-up" class="w-5 h-5"></i>
@@ -211,8 +193,9 @@
                         <span>Precios B2B: PP Propio vs Promedios Mercado por Canal</span>
                     </h2>
                 </div>
-                <div class="h-72">
+                <div class="h-72 relative">
                     <canvas id="chartPreciosCanal"></canvas>
+                    <p id="chart1Empty" class="absolute inset-0 flex items-center justify-center text-xs opacity-60">Sin datos. Carga un archivo Excel.</p>
                 </div>
             </div>
 
@@ -223,8 +206,9 @@
                         <span>Variación % vs Promedio B2B General</span>
                     </h2>
                 </div>
-                <div class="h-72">
+                <div class="h-72 relative">
                     <canvas id="chartVariacion"></canvas>
+                    <p id="chart2Empty" class="absolute inset-0 flex items-center justify-center text-xs opacity-60">Sin datos. Carga un archivo Excel.</p>
                 </div>
             </div>
         </section>
@@ -235,9 +219,9 @@
                 <div>
                     <h2 class="text-base font-bold flex items-center space-x-2">
                         <i data-lucide="table" class="w-5 h-5 text-blue-500"></i>
-                        <span>Matriz Consolidada Benchmark B2B Comercial Proplasa</span>
+                        <span>Matriz Consolidada Benchmark B2B Comercial</span>
                     </h2>
-                    <p class="text-xs opacity-75">Análisis comparativo de precios B2B propios vs competencia con sugerencias y alertas de costo</p>
+                    <p class="text-xs opacity-75">Análisis comparativo de precios B2B propios vs competencia. Puedes editar el <strong>% Margen Actual</strong> de cada producto directamente en la tabla.</p>
                 </div>
             </div>
 
@@ -247,8 +231,8 @@
                         <tr class="border-b border-slate-300 dark:border-white/10 bg-slate-200/80 dark:bg-navy-900/80 uppercase tracking-wider">
                             <th class="p-3">Producto</th>
                             <th class="p-3">Categoría</th>
-                            <th class="p-3 text-right">Costo CK</th>
-                            <th class="p-3 text-center">% Margen Actual</th>
+                            <th class="p-3 text-right">Costo C$</th>
+                            <th class="p-3 text-center">% Margen Actual (editable)</th>
                             <th class="p-3 text-right">PP B2B Propio</th>
                             <th class="p-3 text-right">Prom. B2B Moderno</th>
                             <th class="p-3 text-right">Prom. B2B Tradicional</th>
@@ -260,7 +244,6 @@
                         </tr>
                     </thead>
                     <tbody id="benchmarkTableBody" class="divide-y divide-slate-200 dark:divide-white/5">
-                        <!-- Filas dinámicas -->
                     </tbody>
                 </table>
             </div>
@@ -273,7 +256,6 @@
                 <h2 class="text-base font-bold">Propuestas de Mejoras & Recomendaciones Estratégicas</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="proposalsContainer">
-                <!-- Se llena dinámicamente -->
             </div>
         </section>
 
@@ -286,7 +268,7 @@
                     </div>
                     <div>
                         <h2 class="text-base font-bold">Base de Datos de Levantamiento de Campo</h2>
-                        <p class="text-xs opacity-75" id="rawTableSubtitle">Registros individuales de campo en tiempo real</p>
+                        <p class="text-xs opacity-75" id="rawTableSubtitle">Registros individuales de campo</p>
                     </div>
                 </div>
 
@@ -311,7 +293,6 @@
                         </tr>
                     </thead>
                     <tbody id="rawTableBody" class="divide-y divide-slate-200 dark:divide-white/5">
-                        <!-- Filas dinámicas -->
                     </tbody>
                 </table>
             </div>
@@ -320,14 +301,13 @@
     </main>
 
     <footer class="p-4 text-center text-xs opacity-60 border-t border-slate-300 dark:border-white/5">
-        Benchmark B2B Comercial Proplasa | Octubre 2026
+        Benchmark B2B Comercial
     </footer>
 
     <!-- Lógica de Script -->
     <script>
         lucide.createIcons();
 
-        // Control de Tema Claro / Oscuro
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -337,62 +317,51 @@
                 html.classList.remove('light');
                 html.classList.add('dark');
             }
+            recalculateAndRender();
         }
 
-        let costosCKMap = {
-            "Lavadora Semiautomática 16kg": 8160.00,
-            "Refrigeradora Inverter 9 ft": 12080.00,
-            "Minibar 3 pies cúbicos": 6220.00,
-            "Minibar 3.3 pies cúbicos": 6220.00,
-            "Minibar 3.5 pies cúbicos": 6220.00,
-            "Minibar 4.3 pies cúbicos": 6220.00,
-            "Tv RCA Rocku tv qled 43\"": 7770.00,
-            "Tv RCA Rocku tv qled 58\"": 11285.00,
-            "Bocina 12\" / Miami Series / RCTS1220 / 120W": 5365.00,
-            "Torre de Sonido / 10\"x2 / HLBS1010 / 100W / 12V /Hotline": 4070.00
-        };
-
-        let rawDatabase = [
-            { id: 1, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 14kg", marca: "Black & Decker", precioB2B: 6660, fecha: "2026-10-13" },
-            { id: 2, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 14kg", marca: "Black & Decker", precioB2B: 6750, fecha: "2026-10-13" },
-            { id: 3, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 14kg", marca: "Challenger", precioB2B: 6930, fecha: "2026-10-13" },
-            { id: 4, comercio: "Walmart", canal: "Moderno", categoria: "Lavadoras", producto: "Lavadora Semiautomática 14kg", marca: "Whirlpool", precioB2B: 7390.845, fecha: "2026-10-13" },
-            { id: 5, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 14kg", marca: "Oster", precioB2B: 8370, fecha: "2026-10-13" },
-            { id: 6, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 16kg", marca: "Mabe", precioB2B: 8010, fecha: "2026-10-22" },
-            { id: 7, comercio: "Marketplace", canal: "Tradicional", categoria: "Lavadoras", producto: "Lavadora Semiautomática 16kg", marca: "Mabe", precioB2B: 7200, fecha: "2026-10-22" },
-            { id: 8, comercio: "Walmart", canal: "Moderno", categoria: "Lavadoras", producto: "Lavadora Semiautomática 16kg", marca: "Whirlpool", precioB2B: 7051.59, fecha: "2026-10-22" },
-            { id: 9, comercio: "Siman", canal: "Moderno", categoria: "Minibar", producto: "Minibar 3 pies cúbicos", marca: "RCA", precioB2B: 5849.1, fecha: "2026-10-22" },
-            { id: 10, comercio: "Walmart", canal: "Moderno", categoria: "Minibar", producto: "Minibar 3.3 pies cúbicos", marca: "Oster", precioB2B: 4500, fecha: "2026-10-22" },
-            { id: 11, comercio: "Marketplace", canal: "Tradicional", categoria: "Minibar", producto: "Minibar 3.5 pies cúbicos", marca: "Sankey", precioB2B: 5400, fecha: "2026-10-22" },
-            { id: 12, comercio: "Marketplace", canal: "Tradicional", categoria: "Minibar", producto: "Minibar 3.5 pies cúbicos", marca: "Danna", precioB2B: 4950, fecha: "2026-10-22" },
-            { id: 13, comercio: "Marketplace", canal: "Tradicional", categoria: "Minibar", producto: "Minibar 4.3 pies cúbicos", marca: "Premium Levella", precioB2B: 5985, fecha: "2026-10-22" },
-            { id: 14, comercio: "Siman", canal: "Moderno", categoria: "Refrigeradoras", producto: "Refrigeradora Inverter 9 ft", marca: "Whirlpool", precioB2B: 17099.1, fecha: "2026-10-13" },
-            { id: 15, comercio: "GCM", canal: "Tradicional", categoria: "Refrigeradoras", producto: "Refrigeradora Inverter 9 ft", marca: "Midea", precioB2B: 13702.5, fecha: "2026-10-13" },
-            { id: 16, comercio: "Siman", canal: "Moderno", categoria: "Televisores", producto: "Tv RCA Rocku tv qled 43\"", marca: "RCA", precioB2B: 8099.10, fecha: "2026-10-19" },
-            { id: 17, comercio: "Marketplace", canal: "Tradicional", categoria: "Televisores", producto: "Tv RCA Rocku tv qled 43\"", marca: "RCA", precioB2B: 7897.28, fecha: "2026-10-19" },
-            { id: 18, comercio: "Siman", canal: "Moderno", categoria: "Televisores", producto: "Tv RCA Rocku tv qled 58\"", marca: "RCA", precioB2B: 13047.90, fecha: "2026-10-19" },
-            { id: 19, comercio: "Marketplace", canal: "Tradicional", categoria: "Televisores", producto: "Tv RCA Rocku tv qled 58\"", marca: "RCA", precioB2B: 11910.00, fecha: "2026-10-19" },
-            { id: 20, comercio: "Siman", canal: "Moderno", categoria: "Sonido", producto: "Bocina 12\" / Miami Series / RCTS1220 / 120W", marca: "RCA", precioB2B: 6569.10, fecha: "2026-10-19" },
-            { id: 21, comercio: "Marketplace", canal: "Tradicional", categoria: "Sonido", producto: "Bocina 12\" / Miami Series / RCTS1220 / 120W", marca: "RCA", precioB2B: 7110.00, fecha: "2026-10-19" },
-            { id: 22, comercio: "Siman", canal: "Moderno", categoria: "Sonido", producto: "Torre de Sonido / 10\"x2 / HLBS1010 / 100W / 12V /Hotline", marca: "Hotline", precioB2B: 6295.50, fecha: "2026-10-19" },
-            { id: 23, comercio: "Marketplace", canal: "Tradicional", categoria: "Sonido", producto: "Torre de Sonido / 10\"x2 / HLBS1010 / 100W / 12V /Hotline", marca: "Hotline", precioB2B: 6606.00, fecha: "2026-10-19" }
-        ];
+        // ===== Estado: la plataforma inicia VACÍA; solo se llena al cargar un Excel =====
+        let costosCKMap = {};     // { producto: costo }
+        let margenesMap = {};     // { producto: margen en decimal (0.30 = 30%) } editable en la matriz
+        let rawDatabase = [];     // registros de levantamiento
 
         let currentChannel = 'all';
         let selectedDate = 'all';
         let isRawTableVisible = false;
         let chart1, chart2;
+        let currentBenchmark = [];
+
+        const esc = (s) => String(s === null || s === undefined ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
         const formatMoney = (val) => {
             if (val === null || val === undefined || isNaN(val)) return '-';
             return 'C$ ' + Number(val).toLocaleString('es-NI', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         };
 
+        function parseNum(val) {
+            if (val === null || val === undefined) return 0;
+            if (typeof val === 'number') return val;
+            const cleaned = String(val).replace(/[^0-9.-]+/g, "");
+            const num = parseFloat(cleaned);
+            return isNaN(num) ? 0 : num;
+        }
+
         function formatDateStr(dateVal) {
             if (!dateVal) return '';
-            if (typeof dateVal === 'string') return dateVal.substring(0, 10);
-            if (dateVal instanceof Date) return dateVal.toISOString().substring(0, 10);
-            return String(dateVal);
+            if (dateVal instanceof Date) {
+                return dateVal.toISOString().substring(0, 10);
+            }
+            if (typeof dateVal === 'number') {
+                // Serial de fecha de Excel
+                const utc_days = Math.floor(dateVal - 25569);
+                const utc_value = utc_days * 86400;
+                const date_info = new Date(utc_value * 1000);
+                return date_info.toISOString().substring(0, 10);
+            }
+            let s = String(dateVal).trim();
+            if (s.length >= 10) return s.substring(0, 10);
+            return s;
         }
 
         function toggleRawTable() {
@@ -415,8 +384,9 @@
 
         function updateDateSelectOptions() {
             const select = document.getElementById('dateFilterSelect');
+            if (!select) return;
             const dates = [...new Set(rawDatabase.map(d => formatDateStr(d.fecha)))].filter(Boolean).sort();
-            
+
             select.innerHTML = '<option value="all">Todas las Fechas</option>';
             dates.forEach(d => {
                 const option = document.createElement('option');
@@ -428,7 +398,8 @@
         }
 
         function onDateFilterChange() {
-            selectedDate = document.getElementById('dateFilterSelect').value;
+            const select = document.getElementById('dateFilterSelect');
+            if (select) selectedDate = select.value;
             recalculateAndRender();
         }
 
@@ -436,11 +407,24 @@
             currentChannel = channel;
             ['btn-all', 'btn-moderno', 'btn-tradicional'].forEach(id => {
                 const btn = document.getElementById(id);
-                btn.className = "px-3 py-1.5 rounded-md opacity-75 hover:opacity-100 transition";
+                if (btn) btn.className = "px-3 py-1.5 rounded-md opacity-75 hover:opacity-100 transition";
             });
             const activeBtn = document.getElementById(`btn-${channel.toLowerCase()}`);
             if (activeBtn) {
                 activeBtn.className = "px-3 py-1.5 rounded-md text-white bg-blue-600 transition font-semibold";
+            }
+            recalculateAndRender();
+        }
+
+        // Edición del margen por producto desde la matriz
+        function setProductMargin(idx, value) {
+            const item = currentBenchmark[idx];
+            if (!item) return;
+            const v = parseFloat(String(value).replace(',', '.'));
+            if (isNaN(v) || v <= 0 || v >= 100) {
+                delete margenesMap[item.producto];
+            } else {
+                margenesMap[item.producto] = v / 100;
             }
             recalculateAndRender();
         }
@@ -451,9 +435,14 @@
                 filteredRecords = rawDatabase.filter(r => formatDateStr(r.fecha) === selectedDate);
             }
 
-            document.getElementById('kpi-registros').innerText = filteredRecords.length;
-            document.getElementById('kpi-marcas').innerText = new Set(filteredRecords.map(r => r.marca)).size;
-            document.getElementById('kpi-comercios').innerText = new Set(filteredRecords.map(r => r.comercio)).size;
+            const regEl = document.getElementById('kpi-registros');
+            const marcEl = document.getElementById('kpi-marcas');
+            const comEl = document.getElementById('kpi-comercios');
+            const posEl = document.getElementById('kpi-posicion');
+
+            if (regEl) regEl.innerText = filteredRecords.length;
+            if (marcEl) marcEl.innerText = new Set(filteredRecords.map(r => r.marca)).size;
+            if (comEl) comEl.innerText = new Set(filteredRecords.map(r => r.comercio)).size;
 
             const productsMap = {};
             filteredRecords.forEach(r => {
@@ -461,21 +450,20 @@
                 if (!productsMap[r.producto]) {
                     productsMap[r.producto] = {
                         producto: r.producto,
-                        categoria: r.categoria || 'Electrodomésticos',
+                        categoria: r.categoria || 'General',
                         b2bModerno: [],
                         b2bTradicional: [],
                         todosB2B: []
                     };
                 }
-                const pVal = parseFloat(r.precioB2B);
-                if (!isNaN(pVal)) {
+                const pVal = parseNum(r.precioB2B);
+                if (pVal > 0) {
                     productsMap[r.producto].todosB2B.push(pVal);
                     if (r.canal === 'Moderno') productsMap[r.producto].b2bModerno.push(pVal);
                     if (r.canal === 'Tradicional') productsMap[r.producto].b2bTradicional.push(pVal);
                 }
             });
 
-            const globalMargin = parseFloat(document.getElementById('globalMarginInput').value) / 100 || 0.18;
             const calculatedBenchmark = [];
             let totalDeviations = 0;
             let countDeviations = 0;
@@ -486,14 +474,15 @@
 
                 const promModB2B = avg(group.b2bModerno);
                 const promTradB2B = avg(group.b2bTradicional);
-                
+
                 let promGenB2B = avg(group.todosB2B);
                 if (promModB2B !== null && promTradB2B !== null) {
                     promGenB2B = (promModB2B + promTradB2B) / 2;
                 }
 
-                let cCK = costosCKMap[prodName] || null;
-                let ppB2B = cCK ? (cCK / (1 - globalMargin)) : null;
+                const cCK = costosCKMap[prodName] !== undefined ? costosCKMap[prodName] : null;
+                const margen = margenesMap[prodName] !== undefined ? margenesMap[prodName] : null;
+                const ppB2B = (cCK !== null && cCK > 0 && margen !== null) ? (cCK / (1 - margen)) : null;
 
                 let targetProm = promGenB2B;
                 if (currentChannel === 'Moderno' && promModB2B) targetProm = promModB2B;
@@ -510,7 +499,7 @@
                     producto: prodName,
                     categoria: group.categoria,
                     costoCK: cCK,
-                    margen: globalMargin,
+                    margen: margen,
                     ppB2B: ppB2B,
                     promModerno: promModB2B,
                     promTradicional: promTradB2B,
@@ -519,20 +508,34 @@
                 });
             });
 
-            const avgPos = countDeviations > 0 ? (totalDeviations / countDeviations) : 0;
-            document.getElementById('kpi-posicion').innerText = (avgPos > 0 ? '+' : '') + avgPos.toFixed(1) + '%';
+            currentBenchmark = calculatedBenchmark;
 
-            renderTable(calculatedBenchmark, globalMargin);
+            if (posEl) {
+                if (countDeviations > 0) {
+                    const avgPos = totalDeviations / countDeviations;
+                    posEl.innerText = (avgPos > 0 ? '+' : '') + avgPos.toFixed(1) + '%';
+                } else {
+                    posEl.innerText = '-';
+                }
+            }
+
+            renderTable(calculatedBenchmark);
             renderCharts(calculatedBenchmark);
             renderProposals(calculatedBenchmark);
             renderRawTable(filteredRecords);
         }
 
-        function renderTable(data, globalMargin) {
+        function renderTable(data) {
             const tbody = document.getElementById('benchmarkTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
-            data.forEach(item => {
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" class="p-8 text-center opacity-60">Sin datos. Carga tu archivo Excel con el botón "Cargar Excel" para ver la matriz.</td></tr>`;
+                return;
+            }
+
+            data.forEach((item, idx) => {
                 let posBadge = '<span class="px-2 py-0.5 rounded text-xs bg-slate-700 text-slate-300">Sin Registro</span>';
                 if (item.difPerc !== null) {
                     if (item.difPerc > 5) {
@@ -551,8 +554,8 @@
                 let margenSugeridoText = 'N/A';
                 let precioSugeridoText = '-';
                 let isNegativeMargin = false;
-                
-                if (targetProm && item.costoCK) {
+
+                if (targetProm && item.costoCK !== null) {
                     let sugeridoVal = ((targetProm - item.costoCK) / targetProm) * 100;
                     margenSugeridoText = sugeridoVal.toFixed(1) + '%';
                     precioSugeridoText = formatMoney(targetProm);
@@ -575,13 +578,23 @@
                     `;
                 }
 
+                const margenVal = item.margen !== null ? parseFloat((item.margen * 100).toFixed(2)) : '';
+
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-200/50 dark:hover:bg-white/5 transition';
                 tr.innerHTML = `
-                    <td class="p-3 font-semibold">${item.producto}</td>
-                    <td class="p-3 opacity-75">${item.categoria}</td>
+                    <td class="p-3 font-semibold">${esc(item.producto)}</td>
+                    <td class="p-3 opacity-75">${esc(item.categoria)}</td>
                     <td class="p-3 text-right font-medium text-amber-500">${formatMoney(item.costoCK)}</td>
-                    <td class="p-3 text-center text-blue-500 font-medium">${(globalMargin * 100).toFixed(0)}%</td>
+                    <td class="p-3 text-center">
+                        <div class="inline-flex items-center space-x-1">
+                            <input type="number" step="0.1" min="0.1" max="99" value="${margenVal}" placeholder="--"
+                                   onchange="setProductMargin(${idx}, this.value)"
+                                   title="Editar margen de este producto"
+                                   class="margin-edit w-16 bg-slate-200 dark:bg-navy-900 border border-slate-300 dark:border-white/20 rounded px-2 py-1 text-center font-bold text-blue-500 focus:border-blue-500 outline-none">
+                            <span class="text-blue-500 font-bold">%</span>
+                        </div>
+                    </td>
                     <td class="p-3 text-right font-bold">${formatMoney(item.ppB2B)}</td>
                     <td class="p-3 text-right opacity-80">${formatMoney(item.promModerno)}</td>
                     <td class="p-3 text-right opacity-80">${formatMoney(item.promTradicional)}</td>
@@ -600,21 +613,27 @@
 
         function renderProposals(data) {
             const container = document.getElementById('proposalsContainer');
+            if (!container) return;
             container.innerHTML = '';
 
-            const overPriced = data.filter(d => d.difPerc > 5);
-            const underPriced = data.filter(d => d.difPerc < -5);
-            const aligned = data.filter(d => d.difPerc >= -5 && d.difPerc <= 5);
+            if (data.length === 0) {
+                container.innerHTML = `<p class="text-xs opacity-60 md:col-span-3 text-center py-4">Sin datos. Carga tu archivo Excel para generar recomendaciones.</p>`;
+                return;
+            }
+
+            const overPriced = data.filter(d => d.difPerc !== null && d.difPerc > 5);
+            const underPriced = data.filter(d => d.difPerc !== null && d.difPerc < -5);
+            const aligned = data.filter(d => d.difPerc !== null && d.difPerc >= -5 && d.difPerc <= 5);
 
             let prop1Text = "Todos los productos analizados se encuentran dentro de los márgenes competitivos de mercado.";
             if (overPriced.length > 0) {
-                const names = overPriced.map(p => p.producto).join(', ');
+                const names = overPriced.map(p => esc(p.producto)).join(', ');
                 prop1Text = `Se detectó sobreprecio en: <strong>${names}</strong>. Se recomienda ajustar el precio al nivel sugerido para mantener competitividad.`;
             }
 
             let prop2Text = "No se observan oportunidades inmediatas de incremento de margen.";
             if (underPriced.length > 0) {
-                const names = underPriced.map(p => p.producto).join(', ');
+                const names = underPriced.map(p => esc(p.producto)).join(', ');
                 prop2Text = `Oportunidad de incremento de margen en: <strong>${names}</strong>. Tu precio PP B2B está por debajo del promedio general.`;
             }
 
@@ -650,95 +669,115 @@
 
         function renderRawTable(records) {
             const tbody = document.getElementById('rawTableBody');
+            const subtitle = document.getElementById('rawTableSubtitle');
+            if (!tbody) return;
             tbody.innerHTML = '';
-            document.getElementById('rawTableSubtitle').innerText = `Mostrando ${records.length} registros (${selectedDate === 'all' ? 'Todas las Fechas' : selectedDate})`;
+            if (subtitle) {
+                subtitle.innerText = records.length === 0 && rawDatabase.length === 0
+                    ? 'Sin datos. Carga tu archivo Excel.'
+                    : `Mostrando ${records.length} registros (${selectedDate === 'all' ? 'Todas las Fechas' : selectedDate})`;
+            }
 
             records.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-200/50 dark:hover:bg-white/5 transition';
                 tr.innerHTML = `
-                    <td class="p-2.5 opacity-70">${r.id}</td>
-                    <td class="p-2.5 font-medium">${r.comercio}</td>
-                    <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] ${r.canal === 'Moderno' ? 'bg-purple-500/20 text-purple-400' : 'bg-amber-500/20 text-amber-400'}">${r.canal}</span></td>
-                    <td class="p-2.5 opacity-70">${r.categoria}</td>
-                    <td class="p-2.5 font-medium">${r.producto}</td>
-                    <td class="p-2.5 opacity-80">${r.marca}</td>
-                    <td class="p-2.5 text-right font-bold text-emerald-500">${formatMoney(r.precioB2B)}</td>
-                    <td class="p-2.5 text-center opacity-70">${formatDateStr(r.fecha)}</td>
+                    <td class="p-2.5 opacity-70">${esc(r.id)}</td>
+                    <td class="p-2.5 font-medium">${esc(r.comercio)}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] ${r.canal === 'Moderno' ? 'bg-purple-500/20 text-purple-400' : 'bg-amber-500/20 text-amber-400'}">${esc(r.canal)}</span></td>
+                    <td class="p-2.5 opacity-70">${esc(r.categoria)}</td>
+                    <td class="p-2.5 font-medium">${esc(r.producto)}</td>
+                    <td class="p-2.5 opacity-80">${esc(r.marca)}</td>
+                    <td class="p-2.5 text-right font-bold text-emerald-500">${formatMoney(parseNum(r.precioB2B))}</td>
+                    <td class="p-2.5 text-center opacity-70">${esc(formatDateStr(r.fecha))}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
         function renderCharts(data) {
-            const labels = data.map(d => d.producto.replace('Minibar', 'MB').replace('Lavadora Semiautomática', 'Lav. Semi.'));
+            const labels = data.map(d => d.producto);
             const ppB2BData = data.map(d => d.ppB2B);
             const promGenData = data.map(d => d.promGeneral);
             const promModData = data.map(d => d.promModerno);
             const promTradData = data.map(d => d.promTradicional);
 
-            if (chart1) chart1.destroy();
-            if (chart2) chart2.destroy();
+            if (chart1) { chart1.destroy(); chart1 = null; }
+            if (chart2) { chart2.destroy(); chart2 = null; }
+
+            const empty = data.length === 0;
+            const e1 = document.getElementById('chart1Empty');
+            const e2 = document.getElementById('chart2Empty');
+            if (e1) e1.classList.toggle('hidden', !empty);
+            if (e2) e2.classList.toggle('hidden', !empty);
+            if (empty) return;
 
             const isDark = document.documentElement.classList.contains('dark');
             const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
             const textColor = isDark ? '#94a3b8' : '#64748b';
 
-            const ctx1 = document.getElementById('chartPreciosCanal').getContext('2d');
-            chart1 = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'PP B2B Propio', data: ppB2BData, backgroundColor: 'rgba(59, 130, 246, 0.8)', borderRadius: 4 },
-                        { label: 'Prom. B2B General', data: promGenData, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
-                        { label: 'Prom. B2B Moderno', data: promModData, backgroundColor: 'rgba(168, 85, 247, 0.6)', borderRadius: 4, hidden: currentChannel === 'Tradicional' },
-                        { label: 'Prom. B2B Tradicional', data: promTradData, backgroundColor: 'rgba(245, 158, 11, 0.6)', borderRadius: 4, hidden: currentChannel === 'Moderno' }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: textColor, font: { size: 10 } } } },
-                    scales: {
-                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
-                        y: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } }
+            const el1 = document.getElementById('chartPreciosCanal');
+            if (el1) {
+                const ctx1 = el1.getContext('2d');
+                chart1 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            { label: 'PP B2B Propio', data: ppB2BData, backgroundColor: 'rgba(59, 130, 246, 0.8)', borderRadius: 4 },
+                            { label: 'Prom. B2B General', data: promGenData, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
+                            { label: 'Prom. B2B Moderno', data: promModData, backgroundColor: 'rgba(168, 85, 247, 0.6)', borderRadius: 4, hidden: currentChannel === 'Tradicional' },
+                            { label: 'Prom. B2B Tradicional', data: promTradData, backgroundColor: 'rgba(245, 158, 11, 0.6)', borderRadius: 4, hidden: currentChannel === 'Moderno' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { labels: { color: textColor, font: { size: 10 } } } },
+                        scales: {
+                            x: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
+                            y: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } }
+                        }
                     }
-                }
-            });
+                });
+            }
 
-            const variations = data.map(d => d.difPerc !== null ? d.difPerc.toFixed(1) : 0);
-            const ctx2 = document.getElementById('chartVariacion').getContext('2d');
-            chart2 = new Chart(ctx2, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Brecha % PP B2B vs Promedio B2B Mercado',
-                        data: variations,
-                        borderColor: '#f43f5e',
-                        backgroundColor: 'rgba(244, 63, 94, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 6,
-                        pointBackgroundColor: variations.map(v => v > 5 ? '#f43f5e' : (v < -5 ? '#10b981' : '#3b82f6'))
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: textColor, font: { size: 10 } } } },
-                    scales: {
-                        x: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
-                        y: { ticks: { color: textColor, font: { size: 10 }, callback: v => v + '%' }, grid: { color: gridColor } }
+            const variations = data.map(d => d.difPerc !== null ? Number(d.difPerc.toFixed(1)) : null);
+            const el2 = document.getElementById('chartVariacion');
+            if (el2) {
+                const ctx2 = el2.getContext('2d');
+                chart2 = new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Brecha % PP B2B vs Promedio B2B Mercado',
+                            data: variations,
+                            borderColor: '#f43f5e',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointBackgroundColor: variations.map(v => v > 5 ? '#f43f5e' : (v < -5 ? '#10b981' : '#3b82f6'))
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { labels: { color: textColor, font: { size: 10 } } } },
+                        scales: {
+                            x: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
+                            y: { ticks: { color: textColor, font: { size: 10 }, callback: v => v + '%' }, grid: { color: gridColor } }
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
-        // Carga y Sincronización de Excel
+        // Lector de Excel (pestañas: "Dashboard Benchmark" y "Base de Datos Levantamiento")
         document.getElementById('excelFileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+            const input = e.target;
+            const file = input.files[0];
             if (!file) return;
 
             const reader = new FileReader();
@@ -747,80 +786,114 @@
                     const data = new Uint8Array(evt.target.result);
                     const workbook = XLSX.read(data, { type: 'array', cellDates: true });
 
-                    const dashSheetName = workbook.SheetNames.find(s => s.toLowerCase().includes('dashboard'));
-                    if (dashSheetName) {
-                        const dashSheet = workbook.Sheets[dashSheetName];
-                        const dashJson = XLSX.utils.sheet_to_json(dashSheet, { header: 1 });
-                        
-                        dashJson.forEach(row => {
-                            if (row && row.length >= 4) {
-                                const prodName = String(row[1] || '').trim();
-                                const parsedCk = parseFloat(row[3]);
-                                if (prodName && !isNaN(parsedCk) && parsedCk > 0) {
-                                    costosCKMap[prodName] = parsedCk;
+                    const newCostosMap = {};
+                    const newMargenesMap = {};
+                    const allRawRecords = [];
+
+                    // 1. Leer costos y márgenes de la pestaña "Dashboard Benchmark"
+                    const dashSheet = workbook.Sheets['Dashboard Benchmark'] || workbook.Sheets[workbook.SheetNames[1]];
+                    if (dashSheet) {
+                        // range:0 no ayuda si la hoja empieza en B; por eso se ubican las columnas por NOMBRE de encabezado
+                        const dashJson = XLSX.utils.sheet_to_json(dashSheet, { header: 1, defval: null });
+                        let dHeader = -1, dProd = -1, dCosto = -1, dMargen = -1;
+                        for (let i = 0; i < dashJson.length; i++) {
+                            const hs = (dashJson[i] || []).map(h => String(h === null ? '' : h).trim().toLowerCase());
+                            const p = hs.findIndex(h => h === 'producto');
+                            const c = hs.findIndex(h => h.startsWith('costo'));
+                            if (p !== -1 && c !== -1) {
+                                dHeader = i; dProd = p; dCosto = c;
+                                dMargen = hs.findIndex(h => h.startsWith('margen'));
+                                break;
+                            }
+                        }
+                        if (dHeader !== -1) {
+                            for (let i = dHeader + 1; i < dashJson.length; i++) {
+                                const row = dashJson[i];
+                                if (!row) continue;
+                                const prodName = String(row[dProd] || '').trim();
+                                const costoVal = parseNum(row[dCosto]);
+                                if (prodName && costoVal > 0) {
+                                    newCostosMap[prodName] = costoVal;
+                                    // Margen inicial desde el Excel (0.13 ó 13 => 13%)
+                                    let m = dMargen !== -1 ? parseNum(row[dMargen]) : 0;
+                                    if (m > 0 && m < 1) m = m * 100;
+                                    if (m > 0 && m < 100) newMargenesMap[prodName] = m / 100;
                                 }
                             }
-                        });
-                    }
-
-                    const rawSheetName = workbook.SheetNames.find(s => s.toLowerCase().includes('levantamiento') || s.toLowerCase().includes('base')) || workbook.SheetNames[0];
-                    const rawSheet = workbook.Sheets[rawSheetName];
-                    const rawJson = XLSX.utils.sheet_to_json(rawSheet, { header: 1 });
-
-                    let headerIdx = -1;
-                    for (let i = 0; i < Math.min(rawJson.length, 10); i++) {
-                        const rowStr = JSON.stringify(rawJson[i]);
-                        if (rowStr.includes('Comercio') || rowStr.includes('Producto')) {
-                            headerIdx = i;
-                            break;
                         }
                     }
 
-                    if (headerIdx !== -1) {
-                        const headers = rawJson[headerIdx].map(h => String(h).trim());
-                        const rows = rawJson.slice(headerIdx + 1);
+                    // 2. Leer registros de campo de la pestaña "Base de Datos Levantamiento"
+                    const rawSheet = workbook.Sheets['Base de Datos Levantamiento'] || workbook.Sheets[workbook.SheetNames[2]];
+                    if (rawSheet) {
+                        const rawJson = XLSX.utils.sheet_to_json(rawSheet, { header: 1 });
+                        let headerIdx = -1;
+                        for (let i = 0; i < rawJson.length; i++) {
+                            const r = rawJson[i];
+                            if (r && r.some(c => String(c).toLowerCase().includes('producto'))) {
+                                headerIdx = i;
+                                break;
+                            }
+                        }
 
-                        const colComercio = headers.findIndex(h => h.includes('Comercio') || h.includes('Vendedor'));
-                        const colCanal = headers.findIndex(h => h.includes('Canal') || h.includes('Origen'));
-                        const colCat = headers.findIndex(h => h.includes('Categoría'));
-                        const colProd = headers.findIndex(h => h.includes('Producto'));
-                        const colMarca = headers.findIndex(h => h.includes('Marca') || h.includes('Proveedor'));
-                        const colPrecioB2B = headers.findIndex(h => h.includes('Precio B2B'));
-                        const colPrecioLev = headers.findIndex(h => h.includes('Precio Levantado') || h.includes('Precio'));
-                        const colFecha = headers.findIndex(h => h.includes('Fecha levantamiento') || h.includes('Fecha'));
+                        if (headerIdx !== -1) {
+                            const headers = rawJson[headerIdx].map(h => String(h || '').trim().toLowerCase());
+                            const cComercio = headers.findIndex(h => h.includes('comercio'));
+                            const cCanal = headers.findIndex(h => h.includes('canal'));
+                            const cCat = headers.findIndex(h => h.includes('categoría') || h.includes('categoria'));
+                            const cProd = headers.findIndex(h => h.includes('producto'));
+                            const cMarca = headers.findIndex(h => h.includes('marca'));
+                            const cPrecioB2B = headers.findIndex(h => h.includes('precio b2b'));
+                            const cFecha = headers.findIndex(h => h.includes('fecha levantamiento') || h.includes('fecha'));
 
-                        const newDatabase = [];
-                        rows.forEach((r, idx) => {
-                            if (!r || !r[colProd]) return;
-                            let pB2B = parseFloat(r[colPrecioB2B]);
-                            if (isNaN(pB2B)) pB2B = parseFloat(r[colPrecioLev]);
+                            for (let i = headerIdx + 1; i < rawJson.length; i++) {
+                                const row = rawJson[i];
+                                if (!row || !row[cProd]) continue;
+                                const prodName = String(row[cProd]).trim();
+                                if (!prodName || prodName.toLowerCase() === 'undefined') continue;
 
-                            newDatabase.push({
-                                id: idx + 1,
-                                comercio: r[colComercio] || 'Desconocido',
-                                canal: r[colCanal] || 'General',
-                                categoria: r[colCat] || 'General',
-                                producto: r[colProd],
-                                marca: r[colMarca] || 'N/A',
-                                precioB2B: isNaN(pB2B) ? 0 : pB2B,
-                                fecha: formatDateStr(r[colFecha]) || '2026-10-13'
-                            });
-                        });
+                                const pB2B = cPrecioB2B !== -1 ? parseNum(row[cPrecioB2B]) : 0;
 
-                        if (newDatabase.length > 0) {
-                            rawDatabase = newDatabase;
-                            document.getElementById('fileStatus').innerText = `Sincronizado (${file.name})`;
-                            updateDateSelectOptions();
-                            recalculateAndRender();
-                            alert(`¡Archivo sincronizado con éxito!\nSe actualizaron los Costos CK y ${newDatabase.length} registros de levantamiento.`);
-                            return;
+                                const comercioVal = cComercio !== -1 && row[cComercio] ? String(row[cComercio]).trim() : 'Comercio Local';
+                                const canalVal = cCanal !== -1 && row[cCanal] ? String(row[cCanal]).trim() : 'Moderno';
+                                const catVal = cCat !== -1 && row[cCat] ? String(row[cCat]).trim() : 'General';
+                                const marcaVal = cMarca !== -1 && row[cMarca] ? String(row[cMarca]).trim() : 'Genérica';
+                                const fechaVal = cFecha !== -1 && row[cFecha] !== undefined ? row[cFecha] : '';
+
+                                allRawRecords.push({
+                                    id: allRawRecords.length + 1,
+                                    comercio: comercioVal,
+                                    canal: canalVal.includes('Trad') ? 'Tradicional' : 'Moderno',
+                                    categoria: catVal,
+                                    producto: prodName,
+                                    marca: marcaVal,
+                                    precioB2B: pB2B,
+                                    fecha: fechaVal
+                                });
+                            }
                         }
                     }
-                    alert("No se detectó la estructura correcta en el archivo subido.");
+
+                    if (allRawRecords.length > 0) {
+                        // Reemplaza todo lo anterior con lo del archivo cargado
+                        rawDatabase = allRawRecords;
+                        costosCKMap = newCostosMap;
+                        margenesMap = newMargenesMap;
+                        selectedDate = 'all';
+                        const fs = document.getElementById('fileStatus');
+                        fs.innerText = `Sincronizado (${file.name})`;
+                        fs.className = 'font-medium text-emerald-500';
+                        updateDateSelectOptions();
+                        recalculateAndRender();
+                        alert(`¡Archivo sincronizado con éxito!\nSe cargaron ${allRawRecords.length} registros y ${Object.keys(newCostosMap).length} costos.`);
+                    } else {
+                        alert("No se pudieron extraer registros de la base de levantamiento.");
+                    }
                 } catch (err) {
-                    alert("Ocurrió un error al procesar el archivo Excel.");
                     console.error(err);
+                    alert("Error al leer el archivo Excel.");
                 }
+                input.value = ''; // permite volver a cargar el mismo archivo
             };
             reader.readAsArrayBuffer(file);
         });
