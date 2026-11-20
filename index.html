@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Benchmark B2B Comercial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,12 +14,17 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] },
                     colors: {
+                        blue: {
+                            50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8',
+                            500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e'
+                        },
                         navy: {
-                            900: '#000B70',
-                            800: '#0A158A',
-                            700: '#1420A3',
-                            950: '#000642'
+                            900: '#141e33',
+                            800: '#1c2740',
+                            700: '#2a3a5c',
+                            950: '#000611'
                         }
                     }
                 }
@@ -32,9 +40,9 @@
 
     <style>
         .dark .glass-panel {
-            background: rgba(10, 21, 138, 0.4);
+            background: #0d1526;
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #1c2740;
         }
         .light .glass-panel {
             background: rgba(255, 255, 255, 0.85);
@@ -43,9 +51,9 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
         .dark .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: #111b30;
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid #1c2740;
         }
         .light .glass-card {
             background: rgba(248, 250, 252, 0.9);
@@ -54,9 +62,11 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        .dark ::-webkit-scrollbar-track { background: #000642; }
+        .dark ::-webkit-scrollbar-track { background: #000611; }
         .light ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #1420A3; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #1e2b45; border-radius: 4px; }
+        body { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+        .dark select option { background: #0d1526; color: #e2e8f0; }
         /* Ocultar flechas del input numérico de margen */
         input.margin-edit::-webkit-outer-spin-button,
         input.margin-edit::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -100,7 +110,7 @@
     <main class="flex-1 p-6 space-y-6 max-w-[1600px] mx-auto w-full">
 
         <!-- Barra de Control y Filtros -->
-        <section class="glass-panel p-4 rounded-xl flex flex-wrap items-center justify-between gap-4">
+        <section class="glass-panel p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
                 <span class="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
                     <i data-lucide="filter" class="w-4 h-4 text-blue-500"></i>
@@ -123,7 +133,17 @@
                 </select>
             </div>
 
-            <button onclick="recalculateAndRender()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow flex items-center space-x-2 transition-all">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 opacity-80">
+                    <i data-lucide="layers" class="w-4 h-4 text-purple-500"></i>
+                    Categoría:
+                </span>
+                <select id="categoryFilterSelect" onchange="onCategoryFilterChange()" class="bg-slate-200 dark:bg-navy-900 border border-slate-300 dark:border-white/20 rounded-lg px-3 py-1.5 text-xs font-medium outline-none focus:border-blue-500">
+                    <option value="all">Todas las Categorías</option>
+                </select>
+            </div>
+
+            <button onclick="recalculateAndRender()" class="bg-sky-700 hover:bg-sky-600 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow flex items-center space-x-2 transition-all">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 <span>Actualizar Datos</span>
             </button>
@@ -131,7 +151,7 @@
 
         <!-- KPI Cards -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="glass-card p-5 rounded-xl border-l-4 border-l-blue-500">
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-blue-500">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs uppercase tracking-wider font-medium opacity-75">Total Registros B2B</p>
@@ -144,7 +164,7 @@
                 <p class="text-xs opacity-65 mt-2">Muestra de precios B2B analizada</p>
             </div>
 
-            <div class="glass-card p-5 rounded-xl border-l-4 border-l-purple-500">
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-purple-500">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs uppercase tracking-wider font-medium opacity-75">Marcas Competidoras</p>
@@ -157,7 +177,7 @@
                 <p class="text-xs opacity-65 mt-2">Proveedores monitoreados</p>
             </div>
 
-            <div class="glass-card p-5 rounded-xl border-l-4 border-l-emerald-500">
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-emerald-500">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs uppercase tracking-wider font-medium opacity-75">Comercios / Clientes</p>
@@ -170,7 +190,7 @@
                 <p class="text-xs opacity-65 mt-2">Puntos de venta relevados</p>
             </div>
 
-            <div class="glass-card p-5 rounded-xl border-l-4 border-l-amber-500">
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-amber-500">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs uppercase tracking-wider font-medium opacity-75">Brecha Promedio B2B</p>
@@ -186,7 +206,7 @@
 
         <!-- Seccion de Gráficos -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="glass-panel p-5 rounded-xl space-y-4">
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-semibold flex items-center space-x-2">
                         <i data-lucide="bar-chart-3" class="w-4 h-4 text-blue-500"></i>
@@ -199,7 +219,7 @@
                 </div>
             </div>
 
-            <div class="glass-panel p-5 rounded-xl space-y-4">
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-semibold flex items-center space-x-2">
                         <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-500"></i>
@@ -214,7 +234,7 @@
         </section>
 
         <!-- Matriz Consolidada -->
-        <section class="glass-panel p-5 rounded-xl space-y-4">
+        <section class="glass-panel p-5 rounded-2xl space-y-4">
             <div class="flex flex-wrap justify-between items-center gap-2">
                 <div>
                     <h2 class="text-base font-bold flex items-center space-x-2">
@@ -250,7 +270,7 @@
         </section>
 
         <!-- Propuestas de Mejora -->
-        <section class="glass-panel p-5 rounded-xl space-y-4">
+        <section class="glass-panel p-5 rounded-2xl space-y-4">
             <div class="flex items-center space-x-2 border-b border-slate-300 dark:border-white/10 pb-3">
                 <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500"></i>
                 <h2 class="text-base font-bold">Propuestas de Mejoras & Recomendaciones Estratégicas</h2>
@@ -260,7 +280,7 @@
         </section>
 
         <!-- Base de Datos Levantamiento Desplegable -->
-        <section class="glass-panel p-5 rounded-xl space-y-4">
+        <section class="glass-panel p-5 rounded-2xl space-y-4">
             <div class="flex flex-wrap justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <div class="p-2 bg-emerald-500/20 text-emerald-500 rounded-lg">
@@ -327,6 +347,7 @@
 
         let currentChannel = 'all';
         let selectedDate = 'all';
+        let selectedCategory = 'all';
         let isRawTableVisible = false;
         let chart1, chart2;
         let currentBenchmark = [];
@@ -397,6 +418,27 @@
             select.value = selectedDate;
         }
 
+        function updateCategorySelectOptions() {
+            const select = document.getElementById('categoryFilterSelect');
+            if (!select) return;
+            const cats = [...new Set(rawDatabase.map(d => d.categoria))].filter(Boolean).sort((a, b) => a.localeCompare(b, 'es'));
+            select.innerHTML = '<option value="all">Todas las Categorías</option>';
+            cats.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c;
+                option.textContent = c;
+                select.appendChild(option);
+            });
+            if (selectedCategory !== 'all' && !cats.includes(selectedCategory)) selectedCategory = 'all';
+            select.value = selectedCategory;
+        }
+
+        function onCategoryFilterChange() {
+            const select = document.getElementById('categoryFilterSelect');
+            if (select) selectedCategory = select.value;
+            recalculateAndRender();
+        }
+
         function onDateFilterChange() {
             const select = document.getElementById('dateFilterSelect');
             if (select) selectedDate = select.value;
@@ -430,9 +472,9 @@
         }
 
         function recalculateAndRender() {
-            let filteredRecords = rawDatabase;
+            let filteredRecords = rawDatabase.filter(r => selectedCategory === 'all' || r.categoria === selectedCategory);
             if (selectedDate !== 'all') {
-                filteredRecords = rawDatabase.filter(r => formatDateStr(r.fecha) === selectedDate);
+                filteredRecords = filteredRecords.filter(r => formatDateStr(r.fecha) === selectedDate);
             }
 
             const regEl = document.getElementById('kpi-registros');
@@ -638,7 +680,7 @@
             }
 
             container.innerHTML = `
-                <div class="glass-card p-4 rounded-xl border-t-2 border-t-rose-500 space-y-2">
+                <div class="glass-card p-4 rounded-2xl border-t-2 border-t-rose-500 space-y-2">
                     <div class="flex items-center space-x-2 text-rose-500 font-bold text-sm">
                         <i data-lucide="alert-circle" class="w-4 h-4"></i>
                         <span>Ajustes Prioritarios por Sobreprecio</span>
@@ -646,7 +688,7 @@
                     <p class="text-xs opacity-80 leading-relaxed">${prop1Text}</p>
                 </div>
 
-                <div class="glass-card p-4 rounded-xl border-t-2 border-t-emerald-500 space-y-2">
+                <div class="glass-card p-4 rounded-2xl border-t-2 border-t-emerald-500 space-y-2">
                     <div class="flex items-center space-x-2 text-emerald-500 font-bold text-sm">
                         <i data-lucide="trending-up" class="w-4 h-4"></i>
                         <span>Oportunidad de Ganancia / Margen</span>
@@ -654,7 +696,7 @@
                     <p class="text-xs opacity-80 leading-relaxed">${prop2Text}</p>
                 </div>
 
-                <div class="glass-card p-4 rounded-xl border-t-2 border-t-blue-500 space-y-2">
+                <div class="glass-card p-4 rounded-2xl border-t-2 border-t-blue-500 space-y-2">
                     <div class="flex items-center space-x-2 text-blue-500 font-bold text-sm">
                         <i data-lucide="layers" class="w-4 h-4"></i>
                         <span>Estrategia de Volumen por Canal</span>
@@ -675,7 +717,7 @@
             if (subtitle) {
                 subtitle.innerText = records.length === 0 && rawDatabase.length === 0
                     ? 'Sin datos. Carga tu archivo Excel.'
-                    : `Mostrando ${records.length} registros (${selectedDate === 'all' ? 'Todas las Fechas' : selectedDate})`;
+                    : `Mostrando ${records.length} registros (${selectedDate === 'all' ? 'Todas las Fechas' : selectedDate}${selectedCategory === 'all' ? '' : ' · ' + selectedCategory})`;
             }
 
             records.forEach(r => {
@@ -724,7 +766,7 @@
                     data: {
                         labels: labels,
                         datasets: [
-                            { label: 'PP B2B Propio', data: ppB2BData, backgroundColor: 'rgba(59, 130, 246, 0.8)', borderRadius: 4 },
+                            { label: 'PP B2B Propio', data: ppB2BData, backgroundColor: 'rgba(14, 165, 233, 0.85)', borderRadius: 4 },
                             { label: 'Prom. B2B General', data: promGenData, backgroundColor: 'rgba(16, 185, 129, 0.8)', borderRadius: 4 },
                             { label: 'Prom. B2B Moderno', data: promModData, backgroundColor: 'rgba(168, 85, 247, 0.6)', borderRadius: 4, hidden: currentChannel === 'Tradicional' },
                             { label: 'Prom. B2B Tradicional', data: promTradData, backgroundColor: 'rgba(245, 158, 11, 0.6)', borderRadius: 4, hidden: currentChannel === 'Moderno' }
@@ -758,7 +800,7 @@
                             fill: true,
                             tension: 0.3,
                             pointRadius: 6,
-                            pointBackgroundColor: variations.map(v => v > 5 ? '#f43f5e' : (v < -5 ? '#10b981' : '#3b82f6'))
+                            pointBackgroundColor: variations.map(v => v > 5 ? '#f43f5e' : (v < -5 ? '#10b981' : '#38bdf8'))
                         }]
                     },
                     options: {
@@ -883,6 +925,8 @@
                         const fs = document.getElementById('fileStatus');
                         fs.innerText = `Sincronizado (${file.name})`;
                         fs.className = 'font-medium text-emerald-500';
+                        selectedCategory = 'all';
+                        updateCategorySelectOptions();
                         updateDateSelectOptions();
                         recalculateAndRender();
                         alert(`¡Archivo sincronizado con éxito!\nSe cargaron ${allRawRecords.length} registros y ${Object.keys(newCostosMap).length} costos.`);
@@ -899,6 +943,7 @@
         });
 
         window.onload = () => {
+            updateCategorySelectOptions();
             updateDateSelectOptions();
             recalculateAndRender();
         };
